@@ -16,7 +16,7 @@ impl State {
         self.is_shutdown = false;
         self.is_battery = false;
     }
-    pub fn step(&mut self, action: &Action, maze: &Maze, prev_state: &State) -> f32 {
+    pub fn step(&mut self, action: &Action, maze: &Maze, prev_state: &State) -> (f32, bool) {
         let (dx, dy) = match action {
             Action::Up => (-1, 0),
             Action::Right => (0, 1),
@@ -39,7 +39,7 @@ impl State {
         self.is_shutdown = self.charge == 0;
         self.is_battery = maze.has_battery(self.pos);
 
-        self.grade(is_walls)
+        (self.grade(is_walls), is_walls)
     }
     fn grade(&mut self, is_walls: bool) -> f32 {
         if self.is_battery {

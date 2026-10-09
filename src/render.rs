@@ -2,7 +2,7 @@ use crate::actions::Action;
 use crate::maze::Maze;
 use crate::state::State;
 
-pub fn render(maze: &Maze, state: &State, steps: i32, next_action: Action) {
+pub fn render(maze: &Maze, state: &State, steps: i32, next_action: Action, episode: i32, is_wall: bool) {
     let (h, w) = maze.size;
 
     let row: String = (0..h)
@@ -24,5 +24,8 @@ pub fn render(maze: &Maze, state: &State, steps: i32, next_action: Action) {
         .join("┃\n┃");
     let border = "━".repeat((w * 3) as usize);
 
-    println!("Zuno took {:?} on the next step\nSteps {steps}: \n┏{border}┓\n┃{row}┃\n┗{border}┛", next_action)
+    let bump = if is_wall { "Zuno bumped into a wall!" } else { "" };
+
+    println!("Zuno turned {:?} on the next step\nSteps {steps} Episode {episode}: \n┏{border}┓\n┃{row}┃\n┗{border}┛\n{bump}", next_action);
+    print!("\x1B[3J\x1B[2J\x1B[H");
 }
